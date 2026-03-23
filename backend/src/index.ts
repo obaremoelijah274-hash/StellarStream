@@ -74,6 +74,7 @@ app.use(
 );
 
 app.use(bigintSerializer);
+app.use(compression());
 app.use(express.json());
 app.use(authMiddleware);
 

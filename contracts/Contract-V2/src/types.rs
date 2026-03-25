@@ -17,6 +17,9 @@ pub struct StreamV2 {
     pub v1_stream_id: u64,
     pub step_duration: i128,
     pub multiplier_bps: i128,
+    pub vault_address: Option<Address>,
+    pub yield_enabled: bool,
+    pub is_pending: bool,
 }
 
 #[contracttype]
@@ -31,6 +34,8 @@ pub struct StreamArgs {
     pub end_time: u64,
     pub step_duration: i128,
     pub multiplier_bps: i128,
+    pub vault_address: Option<Address>,
+    pub yield_enabled: bool,
 }
 
 #[contracttype]
@@ -47,6 +52,8 @@ pub struct PermitArgs {
     pub deadline: u64,
     pub step_duration: i128,
     pub multiplier_bps: i128,
+    pub vault_address: Option<Address>,
+    pub yield_enabled: bool,
 }
 
 // ----------------------------------------------------------------
@@ -216,5 +223,16 @@ pub struct ClawbackRebalanceEvent {
     pub total_remaining: i128,
     pub contract_balance: i128,
     pub reduction_factor_bps: i128,
+    pub timestamp: u64,
+}
+
+#[contracttype]
+#[derive(Clone, Debug)]
+pub struct StreamToppedUpEvent {
+    pub stream_id: u64,
+    pub sender: Address,
+    pub extra_amount: i128,
+    pub new_total_amount: i128,
+    pub new_end_time: u64,
     pub timestamp: u64,
 }

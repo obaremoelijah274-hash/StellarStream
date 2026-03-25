@@ -709,7 +709,7 @@ impl Contract {
 
         // Validate all streams upfront to ensure atomicity
         let mut total_amount: i128 = 0;
-        let mut sender = streams.get(0).unwrap().sender.clone();
+        let sender = streams.get(0).unwrap().sender.clone();
 
         for args in streams.iter() {
             // All streams must have the same sender

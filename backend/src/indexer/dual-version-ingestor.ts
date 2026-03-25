@@ -19,19 +19,23 @@ import { NotificationService } from "../services/notification.service.js";
 const prisma = new PrismaClient();
 const notificationService = new NotificationService();
 
-const RPC_URL          = process.env.STELLAR_RPC_URL ?? "";
-const V1_CONTRACT_ID   = process.env.V1_CONTRACT_ID  ?? "";
-const V2_CONTRACT_ID   = process.env.NEBULA_CONTRACT_ID ?? "";
+const RPC_URL = process.env.STELLAR_RPC_URL ?? "";
+const V1_CONTRACT_ID = process.env.V1_CONTRACT_ID ?? "";
+const V2_CONTRACT_ID = process.env.NEBULA_CONTRACT_ID ?? "";
 const POLL_INTERVAL_MS = parseInt(process.env.POLL_INTERVAL_MS ?? "5000", 10);
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 interface RawStreamPayload {
   stream_id?: unknown;
-  sender?:    unknown;
-  receiver?:  unknown;
-  amount?:    unknown;
-  token?:     unknown;
+  sender?: unknown;
+  receiver?: unknown;
+  amount?: unknown;
+  token?: unknown;
+  yield_enabled?: unknown;
+  yieldEnabled?: unknown;
+  vault_contract_id?: unknown;
+  vaultContractId?: unknown;
 }
 
 // ── Ingestor ──────────────────────────────────────────────────────────────────
@@ -102,10 +106,12 @@ export class DualVersionIngestor {
 
   // ── Event dispatch ──────────────────────────────────────────────────────────
 
-  private async handleEvent(event: SorobanRpc.Api.EventResponse): Promise<void> {
+  private async handleEvent(
+    event: SorobanRpc.Api.EventResponse,
+  ): Promise<void> {
     const contractId = event.contractId?.toString() ?? "";
-    const isLegacy   = contractId === V1_CONTRACT_ID;
-    const action     = this.extractAction(event);
+    const isLegacy = contractId === V1_CONTRACT_ID;
+    const action = this.extractAction(event);
 
     if (!action) return;
 
@@ -120,36 +126,50 @@ export class DualVersionIngestor {
     const streamId = String(payload.stream_id);
 
     await prisma.stream.upsert({
-      where:  { streamId },
-      update: { status: actionToStatus(action) },
+      where: { streamId },
+      update: {
+        status: actionToStatus(action),
+        contractId,
+        version: resolveStreamVersion(contractId),
+        yieldEnabled: isYieldEnabled(payload),
+      },
       create: {
         streamId,
-        txHash:      event.txHash ?? event.id,
-        sender:      String(payload.sender   ?? ""),
-        receiver:    String(payload.receiver ?? ""),
+        txHash: event.txHash ?? event.id,
+        sender: String(payload.sender ?? ""),
+        receiver: String(payload.receiver ?? ""),
+        contractId,
         tokenAddress: payload.token ? String(payload.token) : null,
-        amount:      String(payload.amount   ?? "0"),
-        legacy:      isLegacy,
+        amount: String(payload.amount ?? "0"),
+        version: resolveStreamVersion(contractId),
+        yieldEnabled: isYieldEnabled(payload),
+        legacy: isLegacy,
       },
     });
 
     // Fire "Stream Received" notification for new streams
     if (action === "create") {
-      notificationService.notifyStreamReceived({
-        streamId,
-        sender:       String(payload.sender   ?? ""),
-        receiver:     String(payload.receiver ?? ""),
-        amount:       String(payload.amount   ?? "0"),
-        tokenAddress: payload.token ? String(payload.token) : null,
-        txHash:       event.txHash ?? event.id,
-      }).catch(err => logger.error("[DualIngestor] Notification dispatch error", { err }));
+      notificationService
+        .notifyStreamReceived({
+          streamId,
+          sender: String(payload.sender ?? ""),
+          receiver: String(payload.receiver ?? ""),
+          amount: String(payload.amount ?? "0"),
+          tokenAddress: payload.token ? String(payload.token) : null,
+          txHash: event.txHash ?? event.id,
+        })
+        .catch((err) =>
+          logger.error("[DualIngestor] Notification dispatch error", { err }),
+        );
     }
   }
 
   /**
    * Atomically mark the V1 record as migrated and create the V2 record.
    */
-  private async handleMigration(event: SorobanRpc.Api.EventResponse): Promise<void> {
+  private async handleMigration(
+    event: SorobanRpc.Api.EventResponse,
+  ): Promise<void> {
     const payload = this.decodePayload(event);
     if (!payload?.stream_id) return;
 
@@ -158,20 +178,23 @@ export class DualVersionIngestor {
     await prisma.$transaction([
       // Mark V1 record as migrated
       prisma.stream.updateMany({
-        where:  { streamId: v1StreamId, legacy: true },
-        data:   { migrated: true },
+        where: { streamId: v1StreamId, legacy: true },
+        data: { migrated: true },
       }),
       // Create V2 record
       prisma.stream.create({
         data: {
-          streamId:    `${v1StreamId}-v2`,
-          txHash:      event.txHash ?? event.id,
-          sender:      String(payload.sender   ?? ""),
-          receiver:    String(payload.receiver ?? ""),
+          streamId: `${v1StreamId}-v2`,
+          txHash: event.txHash ?? event.id,
+          sender: String(payload.sender ?? ""),
+          receiver: String(payload.receiver ?? ""),
+          contractId: V2_CONTRACT_ID,
           tokenAddress: payload.token ? String(payload.token) : null,
-          amount:      String(payload.amount   ?? "0"),
-          legacy:      false,
-          migrated:    false,
+          amount: String(payload.amount ?? "0"),
+          version: 2,
+          yieldEnabled: isYieldEnabled(payload),
+          legacy: false,
+          migrated: false,
         },
       }),
     ]);
@@ -190,7 +213,9 @@ export class DualVersionIngestor {
     }
   }
 
-  private decodePayload(event: SorobanRpc.Api.EventResponse): RawStreamPayload | null {
+  private decodePayload(
+    event: SorobanRpc.Api.EventResponse,
+  ): RawStreamPayload | null {
     try {
       const native = scValToNative(event.value);
       return typeof native === "object" && native !== null
@@ -206,9 +231,30 @@ export class DualVersionIngestor {
 
 function actionToStatus(action: string): StreamStatus {
   switch (action) {
-    case "cancel":  return StreamStatus.CANCELED;
-    case "pause":   return StreamStatus.PAUSED;
-    case "resume":  return StreamStatus.ACTIVE;
-    default:        return StreamStatus.ACTIVE;
+    case "cancel":
+      return StreamStatus.CANCELED;
+    case "pause":
+      return StreamStatus.PAUSED;
+    case "resume":
+      return StreamStatus.ACTIVE;
+    default:
+      return StreamStatus.ACTIVE;
   }
+}
+
+function resolveStreamVersion(contractId: string): number {
+  return contractId === V1_CONTRACT_ID ? 1 : 2;
+}
+
+function isYieldEnabled(payload: RawStreamPayload | null): boolean {
+  if (!payload) {
+    return false;
+  }
+
+  const explicitFlag = payload.yield_enabled ?? payload.yieldEnabled;
+  if (typeof explicitFlag === "boolean") {
+    return explicitFlag;
+  }
+
+  return Boolean(payload.vault_contract_id ?? payload.vaultContractId);
 }

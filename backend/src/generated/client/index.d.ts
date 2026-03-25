@@ -19,6 +19,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type Stream = $Result.DefaultSelection<Prisma.$StreamPayload>
 /**
+ * Model ContractEvent
+ * 
+ */
+export type ContractEvent = $Result.DefaultSelection<Prisma.$ContractEventPayload>
+/**
  * Model TokenPrice
  * 
  */
@@ -238,6 +243,16 @@ export class PrismaClient<
     * ```
     */
   get stream(): Prisma.StreamDelegate<ExtArgs>;
+
+  /**
+   * `prisma.contractEvent`: Exposes CRUD operations for the **ContractEvent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ContractEvents
+    * const contractEvents = await prisma.contractEvent.findMany()
+    * ```
+    */
+  get contractEvent(): Prisma.ContractEventDelegate<ExtArgs>;
 
   /**
    * `prisma.tokenPrice`: Exposes CRUD operations for the **TokenPrice** model.
@@ -790,6 +805,7 @@ export namespace Prisma {
 
   export const ModelName: {
     Stream: 'Stream',
+    ContractEvent: 'ContractEvent',
     TokenPrice: 'TokenPrice',
     Webhook: 'Webhook',
     SyncState: 'SyncState',
@@ -816,7 +832,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "stream" | "tokenPrice" | "webhook" | "syncState" | "eventLog" | "streamSnapshot" | "streamArchive" | "bridgeLog" | "proposal" | "apiKey" | "ledgerHash" | "notificationSubscription"
+      modelProps: "stream" | "contractEvent" | "tokenPrice" | "webhook" | "syncState" | "eventLog" | "streamSnapshot" | "streamArchive" | "bridgeLog" | "proposal" | "apiKey" | "ledgerHash" | "notificationSubscription"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -887,6 +903,76 @@ export namespace Prisma {
           count: {
             args: Prisma.StreamCountArgs<ExtArgs>
             result: $Utils.Optional<StreamCountAggregateOutputType> | number
+          }
+        }
+      }
+      ContractEvent: {
+        payload: Prisma.$ContractEventPayload<ExtArgs>
+        fields: Prisma.ContractEventFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ContractEventFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractEventPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ContractEventFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractEventPayload>
+          }
+          findFirst: {
+            args: Prisma.ContractEventFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractEventPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ContractEventFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractEventPayload>
+          }
+          findMany: {
+            args: Prisma.ContractEventFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractEventPayload>[]
+          }
+          create: {
+            args: Prisma.ContractEventCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractEventPayload>
+          }
+          createMany: {
+            args: Prisma.ContractEventCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ContractEventCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractEventPayload>[]
+          }
+          delete: {
+            args: Prisma.ContractEventDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractEventPayload>
+          }
+          update: {
+            args: Prisma.ContractEventUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractEventPayload>
+          }
+          deleteMany: {
+            args: Prisma.ContractEventDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ContractEventUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.ContractEventUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractEventPayload>
+          }
+          aggregate: {
+            args: Prisma.ContractEventAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateContractEvent>
+          }
+          groupBy: {
+            args: Prisma.ContractEventGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ContractEventGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ContractEventCountArgs<ExtArgs>
+            result: $Utils.Optional<ContractEventCountAggregateOutputType> | number
           }
         }
       }
@@ -1834,10 +1920,12 @@ export namespace Prisma {
   }
 
   export type StreamAvgAggregateOutputType = {
+    version: number | null
     duration: number | null
   }
 
   export type StreamSumAggregateOutputType = {
+    version: number | null
     duration: number | null
   }
 
@@ -1845,8 +1933,10 @@ export namespace Prisma {
     id: string | null
     streamId: string | null
     txHash: string | null
+    version: number | null
     sender: string | null
     receiver: string | null
+    contractId: string | null
     tokenAddress: string | null
     amount: string | null
     duration: number | null
@@ -1868,8 +1958,10 @@ export namespace Prisma {
     id: string | null
     streamId: string | null
     txHash: string | null
+    version: number | null
     sender: string | null
     receiver: string | null
+    contractId: string | null
     tokenAddress: string | null
     amount: string | null
     duration: number | null
@@ -1891,8 +1983,10 @@ export namespace Prisma {
     id: number
     streamId: number
     txHash: number
+    version: number
     sender: number
     receiver: number
+    contractId: number
     tokenAddress: number
     amount: number
     duration: number
@@ -1913,10 +2007,12 @@ export namespace Prisma {
 
 
   export type StreamAvgAggregateInputType = {
+    version?: true
     duration?: true
   }
 
   export type StreamSumAggregateInputType = {
+    version?: true
     duration?: true
   }
 
@@ -1924,8 +2020,10 @@ export namespace Prisma {
     id?: true
     streamId?: true
     txHash?: true
+    version?: true
     sender?: true
     receiver?: true
+    contractId?: true
     tokenAddress?: true
     amount?: true
     duration?: true
@@ -1947,8 +2045,10 @@ export namespace Prisma {
     id?: true
     streamId?: true
     txHash?: true
+    version?: true
     sender?: true
     receiver?: true
+    contractId?: true
     tokenAddress?: true
     amount?: true
     duration?: true
@@ -1970,8 +2070,10 @@ export namespace Prisma {
     id?: true
     streamId?: true
     txHash?: true
+    version?: true
     sender?: true
     receiver?: true
+    contractId?: true
     tokenAddress?: true
     amount?: true
     duration?: true
@@ -2080,8 +2182,10 @@ export namespace Prisma {
     id: string
     streamId: string | null
     txHash: string
+    version: number
     sender: string
     receiver: string
+    contractId: string | null
     tokenAddress: string | null
     amount: string
     duration: number | null
@@ -2122,8 +2226,10 @@ export namespace Prisma {
     id?: boolean
     streamId?: boolean
     txHash?: boolean
+    version?: boolean
     sender?: boolean
     receiver?: boolean
+    contractId?: boolean
     tokenAddress?: boolean
     amount?: boolean
     duration?: boolean
@@ -2145,8 +2251,10 @@ export namespace Prisma {
     id?: boolean
     streamId?: boolean
     txHash?: boolean
+    version?: boolean
     sender?: boolean
     receiver?: boolean
+    contractId?: boolean
     tokenAddress?: boolean
     amount?: boolean
     duration?: boolean
@@ -2168,8 +2276,10 @@ export namespace Prisma {
     id?: boolean
     streamId?: boolean
     txHash?: boolean
+    version?: boolean
     sender?: boolean
     receiver?: boolean
+    contractId?: boolean
     tokenAddress?: boolean
     amount?: boolean
     duration?: boolean
@@ -2195,8 +2305,10 @@ export namespace Prisma {
       id: string
       streamId: string | null
       txHash: string
+      version: number
       sender: string
       receiver: string
+      contractId: string | null
       tokenAddress: string | null
       amount: string
       duration: number | null
@@ -2608,8 +2720,10 @@ export namespace Prisma {
     readonly id: FieldRef<"Stream", 'String'>
     readonly streamId: FieldRef<"Stream", 'String'>
     readonly txHash: FieldRef<"Stream", 'String'>
+    readonly version: FieldRef<"Stream", 'Int'>
     readonly sender: FieldRef<"Stream", 'String'>
     readonly receiver: FieldRef<"Stream", 'String'>
+    readonly contractId: FieldRef<"Stream", 'String'>
     readonly tokenAddress: FieldRef<"Stream", 'String'>
     readonly amount: FieldRef<"Stream", 'String'>
     readonly duration: FieldRef<"Stream", 'Int'>
@@ -2910,6 +3024,998 @@ export namespace Prisma {
      * Select specific fields to fetch from the Stream
      */
     select?: StreamSelect<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ContractEvent
+   */
+
+  export type AggregateContractEvent = {
+    _count: ContractEventCountAggregateOutputType | null
+    _avg: ContractEventAvgAggregateOutputType | null
+    _sum: ContractEventSumAggregateOutputType | null
+    _min: ContractEventMinAggregateOutputType | null
+    _max: ContractEventMaxAggregateOutputType | null
+  }
+
+  export type ContractEventAvgAggregateOutputType = {
+    eventIndex: number | null
+    ledgerSequence: number | null
+  }
+
+  export type ContractEventSumAggregateOutputType = {
+    eventIndex: number | null
+    ledgerSequence: number | null
+  }
+
+  export type ContractEventMinAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    contractId: string | null
+    txHash: string | null
+    eventType: string | null
+    eventIndex: number | null
+    ledgerSequence: number | null
+    ledgerClosedAt: string | null
+    valueXdr: string | null
+    createdAt: Date | null
+  }
+
+  export type ContractEventMaxAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    contractId: string | null
+    txHash: string | null
+    eventType: string | null
+    eventIndex: number | null
+    ledgerSequence: number | null
+    ledgerClosedAt: string | null
+    valueXdr: string | null
+    createdAt: Date | null
+  }
+
+  export type ContractEventCountAggregateOutputType = {
+    id: number
+    eventId: number
+    contractId: number
+    txHash: number
+    eventType: number
+    eventIndex: number
+    ledgerSequence: number
+    ledgerClosedAt: number
+    topicXdr: number
+    valueXdr: number
+    decodedJson: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ContractEventAvgAggregateInputType = {
+    eventIndex?: true
+    ledgerSequence?: true
+  }
+
+  export type ContractEventSumAggregateInputType = {
+    eventIndex?: true
+    ledgerSequence?: true
+  }
+
+  export type ContractEventMinAggregateInputType = {
+    id?: true
+    eventId?: true
+    contractId?: true
+    txHash?: true
+    eventType?: true
+    eventIndex?: true
+    ledgerSequence?: true
+    ledgerClosedAt?: true
+    valueXdr?: true
+    createdAt?: true
+  }
+
+  export type ContractEventMaxAggregateInputType = {
+    id?: true
+    eventId?: true
+    contractId?: true
+    txHash?: true
+    eventType?: true
+    eventIndex?: true
+    ledgerSequence?: true
+    ledgerClosedAt?: true
+    valueXdr?: true
+    createdAt?: true
+  }
+
+  export type ContractEventCountAggregateInputType = {
+    id?: true
+    eventId?: true
+    contractId?: true
+    txHash?: true
+    eventType?: true
+    eventIndex?: true
+    ledgerSequence?: true
+    ledgerClosedAt?: true
+    topicXdr?: true
+    valueXdr?: true
+    decodedJson?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ContractEventAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ContractEvent to aggregate.
+     */
+    where?: ContractEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContractEvents to fetch.
+     */
+    orderBy?: ContractEventOrderByWithRelationInput | ContractEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ContractEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContractEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContractEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ContractEvents
+    **/
+    _count?: true | ContractEventCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ContractEventAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ContractEventSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ContractEventMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ContractEventMaxAggregateInputType
+  }
+
+  export type GetContractEventAggregateType<T extends ContractEventAggregateArgs> = {
+        [P in keyof T & keyof AggregateContractEvent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateContractEvent[P]>
+      : GetScalarType<T[P], AggregateContractEvent[P]>
+  }
+
+
+
+
+  export type ContractEventGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ContractEventWhereInput
+    orderBy?: ContractEventOrderByWithAggregationInput | ContractEventOrderByWithAggregationInput[]
+    by: ContractEventScalarFieldEnum[] | ContractEventScalarFieldEnum
+    having?: ContractEventScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ContractEventCountAggregateInputType | true
+    _avg?: ContractEventAvgAggregateInputType
+    _sum?: ContractEventSumAggregateInputType
+    _min?: ContractEventMinAggregateInputType
+    _max?: ContractEventMaxAggregateInputType
+  }
+
+  export type ContractEventGroupByOutputType = {
+    id: string
+    eventId: string
+    contractId: string
+    txHash: string
+    eventType: string
+    eventIndex: number
+    ledgerSequence: number
+    ledgerClosedAt: string | null
+    topicXdr: string[]
+    valueXdr: string
+    decodedJson: JsonValue
+    createdAt: Date
+    _count: ContractEventCountAggregateOutputType | null
+    _avg: ContractEventAvgAggregateOutputType | null
+    _sum: ContractEventSumAggregateOutputType | null
+    _min: ContractEventMinAggregateOutputType | null
+    _max: ContractEventMaxAggregateOutputType | null
+  }
+
+  type GetContractEventGroupByPayload<T extends ContractEventGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ContractEventGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ContractEventGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ContractEventGroupByOutputType[P]>
+            : GetScalarType<T[P], ContractEventGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ContractEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    contractId?: boolean
+    txHash?: boolean
+    eventType?: boolean
+    eventIndex?: boolean
+    ledgerSequence?: boolean
+    ledgerClosedAt?: boolean
+    topicXdr?: boolean
+    valueXdr?: boolean
+    decodedJson?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["contractEvent"]>
+
+  export type ContractEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    contractId?: boolean
+    txHash?: boolean
+    eventType?: boolean
+    eventIndex?: boolean
+    ledgerSequence?: boolean
+    ledgerClosedAt?: boolean
+    topicXdr?: boolean
+    valueXdr?: boolean
+    decodedJson?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["contractEvent"]>
+
+  export type ContractEventSelectScalar = {
+    id?: boolean
+    eventId?: boolean
+    contractId?: boolean
+    txHash?: boolean
+    eventType?: boolean
+    eventIndex?: boolean
+    ledgerSequence?: boolean
+    ledgerClosedAt?: boolean
+    topicXdr?: boolean
+    valueXdr?: boolean
+    decodedJson?: boolean
+    createdAt?: boolean
+  }
+
+
+  export type $ContractEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ContractEvent"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      eventId: string
+      contractId: string
+      txHash: string
+      eventType: string
+      eventIndex: number
+      ledgerSequence: number
+      ledgerClosedAt: string | null
+      topicXdr: string[]
+      valueXdr: string
+      decodedJson: Prisma.JsonValue
+      createdAt: Date
+    }, ExtArgs["result"]["contractEvent"]>
+    composites: {}
+  }
+
+  type ContractEventGetPayload<S extends boolean | null | undefined | ContractEventDefaultArgs> = $Result.GetResult<Prisma.$ContractEventPayload, S>
+
+  type ContractEventCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<ContractEventFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: ContractEventCountAggregateInputType | true
+    }
+
+  export interface ContractEventDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ContractEvent'], meta: { name: 'ContractEvent' } }
+    /**
+     * Find zero or one ContractEvent that matches the filter.
+     * @param {ContractEventFindUniqueArgs} args - Arguments to find a ContractEvent
+     * @example
+     * // Get one ContractEvent
+     * const contractEvent = await prisma.contractEvent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ContractEventFindUniqueArgs>(args: SelectSubset<T, ContractEventFindUniqueArgs<ExtArgs>>): Prisma__ContractEventClient<$Result.GetResult<Prisma.$ContractEventPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one ContractEvent that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {ContractEventFindUniqueOrThrowArgs} args - Arguments to find a ContractEvent
+     * @example
+     * // Get one ContractEvent
+     * const contractEvent = await prisma.contractEvent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ContractEventFindUniqueOrThrowArgs>(args: SelectSubset<T, ContractEventFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ContractEventClient<$Result.GetResult<Prisma.$ContractEventPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first ContractEvent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractEventFindFirstArgs} args - Arguments to find a ContractEvent
+     * @example
+     * // Get one ContractEvent
+     * const contractEvent = await prisma.contractEvent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ContractEventFindFirstArgs>(args?: SelectSubset<T, ContractEventFindFirstArgs<ExtArgs>>): Prisma__ContractEventClient<$Result.GetResult<Prisma.$ContractEventPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first ContractEvent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractEventFindFirstOrThrowArgs} args - Arguments to find a ContractEvent
+     * @example
+     * // Get one ContractEvent
+     * const contractEvent = await prisma.contractEvent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ContractEventFindFirstOrThrowArgs>(args?: SelectSubset<T, ContractEventFindFirstOrThrowArgs<ExtArgs>>): Prisma__ContractEventClient<$Result.GetResult<Prisma.$ContractEventPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more ContractEvents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractEventFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ContractEvents
+     * const contractEvents = await prisma.contractEvent.findMany()
+     * 
+     * // Get first 10 ContractEvents
+     * const contractEvents = await prisma.contractEvent.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const contractEventWithIdOnly = await prisma.contractEvent.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ContractEventFindManyArgs>(args?: SelectSubset<T, ContractEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractEventPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a ContractEvent.
+     * @param {ContractEventCreateArgs} args - Arguments to create a ContractEvent.
+     * @example
+     * // Create one ContractEvent
+     * const ContractEvent = await prisma.contractEvent.create({
+     *   data: {
+     *     // ... data to create a ContractEvent
+     *   }
+     * })
+     * 
+     */
+    create<T extends ContractEventCreateArgs>(args: SelectSubset<T, ContractEventCreateArgs<ExtArgs>>): Prisma__ContractEventClient<$Result.GetResult<Prisma.$ContractEventPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many ContractEvents.
+     * @param {ContractEventCreateManyArgs} args - Arguments to create many ContractEvents.
+     * @example
+     * // Create many ContractEvents
+     * const contractEvent = await prisma.contractEvent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ContractEventCreateManyArgs>(args?: SelectSubset<T, ContractEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ContractEvents and returns the data saved in the database.
+     * @param {ContractEventCreateManyAndReturnArgs} args - Arguments to create many ContractEvents.
+     * @example
+     * // Create many ContractEvents
+     * const contractEvent = await prisma.contractEvent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ContractEvents and only return the `id`
+     * const contractEventWithIdOnly = await prisma.contractEvent.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ContractEventCreateManyAndReturnArgs>(args?: SelectSubset<T, ContractEventCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractEventPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a ContractEvent.
+     * @param {ContractEventDeleteArgs} args - Arguments to delete one ContractEvent.
+     * @example
+     * // Delete one ContractEvent
+     * const ContractEvent = await prisma.contractEvent.delete({
+     *   where: {
+     *     // ... filter to delete one ContractEvent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ContractEventDeleteArgs>(args: SelectSubset<T, ContractEventDeleteArgs<ExtArgs>>): Prisma__ContractEventClient<$Result.GetResult<Prisma.$ContractEventPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one ContractEvent.
+     * @param {ContractEventUpdateArgs} args - Arguments to update one ContractEvent.
+     * @example
+     * // Update one ContractEvent
+     * const contractEvent = await prisma.contractEvent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ContractEventUpdateArgs>(args: SelectSubset<T, ContractEventUpdateArgs<ExtArgs>>): Prisma__ContractEventClient<$Result.GetResult<Prisma.$ContractEventPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more ContractEvents.
+     * @param {ContractEventDeleteManyArgs} args - Arguments to filter ContractEvents to delete.
+     * @example
+     * // Delete a few ContractEvents
+     * const { count } = await prisma.contractEvent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ContractEventDeleteManyArgs>(args?: SelectSubset<T, ContractEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ContractEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractEventUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ContractEvents
+     * const contractEvent = await prisma.contractEvent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ContractEventUpdateManyArgs>(args: SelectSubset<T, ContractEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one ContractEvent.
+     * @param {ContractEventUpsertArgs} args - Arguments to update or create a ContractEvent.
+     * @example
+     * // Update or create a ContractEvent
+     * const contractEvent = await prisma.contractEvent.upsert({
+     *   create: {
+     *     // ... data to create a ContractEvent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ContractEvent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ContractEventUpsertArgs>(args: SelectSubset<T, ContractEventUpsertArgs<ExtArgs>>): Prisma__ContractEventClient<$Result.GetResult<Prisma.$ContractEventPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of ContractEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractEventCountArgs} args - Arguments to filter ContractEvents to count.
+     * @example
+     * // Count the number of ContractEvents
+     * const count = await prisma.contractEvent.count({
+     *   where: {
+     *     // ... the filter for the ContractEvents we want to count
+     *   }
+     * })
+    **/
+    count<T extends ContractEventCountArgs>(
+      args?: Subset<T, ContractEventCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ContractEventCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ContractEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractEventAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ContractEventAggregateArgs>(args: Subset<T, ContractEventAggregateArgs>): Prisma.PrismaPromise<GetContractEventAggregateType<T>>
+
+    /**
+     * Group by ContractEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractEventGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ContractEventGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ContractEventGroupByArgs['orderBy'] }
+        : { orderBy?: ContractEventGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ContractEventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetContractEventGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ContractEvent model
+   */
+  readonly fields: ContractEventFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ContractEvent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ContractEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ContractEvent model
+   */ 
+  interface ContractEventFieldRefs {
+    readonly id: FieldRef<"ContractEvent", 'String'>
+    readonly eventId: FieldRef<"ContractEvent", 'String'>
+    readonly contractId: FieldRef<"ContractEvent", 'String'>
+    readonly txHash: FieldRef<"ContractEvent", 'String'>
+    readonly eventType: FieldRef<"ContractEvent", 'String'>
+    readonly eventIndex: FieldRef<"ContractEvent", 'Int'>
+    readonly ledgerSequence: FieldRef<"ContractEvent", 'Int'>
+    readonly ledgerClosedAt: FieldRef<"ContractEvent", 'String'>
+    readonly topicXdr: FieldRef<"ContractEvent", 'String[]'>
+    readonly valueXdr: FieldRef<"ContractEvent", 'String'>
+    readonly decodedJson: FieldRef<"ContractEvent", 'Json'>
+    readonly createdAt: FieldRef<"ContractEvent", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ContractEvent findUnique
+   */
+  export type ContractEventFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractEvent
+     */
+    select?: ContractEventSelect<ExtArgs> | null
+    /**
+     * Filter, which ContractEvent to fetch.
+     */
+    where: ContractEventWhereUniqueInput
+  }
+
+  /**
+   * ContractEvent findUniqueOrThrow
+   */
+  export type ContractEventFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractEvent
+     */
+    select?: ContractEventSelect<ExtArgs> | null
+    /**
+     * Filter, which ContractEvent to fetch.
+     */
+    where: ContractEventWhereUniqueInput
+  }
+
+  /**
+   * ContractEvent findFirst
+   */
+  export type ContractEventFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractEvent
+     */
+    select?: ContractEventSelect<ExtArgs> | null
+    /**
+     * Filter, which ContractEvent to fetch.
+     */
+    where?: ContractEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContractEvents to fetch.
+     */
+    orderBy?: ContractEventOrderByWithRelationInput | ContractEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ContractEvents.
+     */
+    cursor?: ContractEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContractEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContractEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ContractEvents.
+     */
+    distinct?: ContractEventScalarFieldEnum | ContractEventScalarFieldEnum[]
+  }
+
+  /**
+   * ContractEvent findFirstOrThrow
+   */
+  export type ContractEventFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractEvent
+     */
+    select?: ContractEventSelect<ExtArgs> | null
+    /**
+     * Filter, which ContractEvent to fetch.
+     */
+    where?: ContractEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContractEvents to fetch.
+     */
+    orderBy?: ContractEventOrderByWithRelationInput | ContractEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ContractEvents.
+     */
+    cursor?: ContractEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContractEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContractEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ContractEvents.
+     */
+    distinct?: ContractEventScalarFieldEnum | ContractEventScalarFieldEnum[]
+  }
+
+  /**
+   * ContractEvent findMany
+   */
+  export type ContractEventFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractEvent
+     */
+    select?: ContractEventSelect<ExtArgs> | null
+    /**
+     * Filter, which ContractEvents to fetch.
+     */
+    where?: ContractEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContractEvents to fetch.
+     */
+    orderBy?: ContractEventOrderByWithRelationInput | ContractEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ContractEvents.
+     */
+    cursor?: ContractEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContractEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContractEvents.
+     */
+    skip?: number
+    distinct?: ContractEventScalarFieldEnum | ContractEventScalarFieldEnum[]
+  }
+
+  /**
+   * ContractEvent create
+   */
+  export type ContractEventCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractEvent
+     */
+    select?: ContractEventSelect<ExtArgs> | null
+    /**
+     * The data needed to create a ContractEvent.
+     */
+    data: XOR<ContractEventCreateInput, ContractEventUncheckedCreateInput>
+  }
+
+  /**
+   * ContractEvent createMany
+   */
+  export type ContractEventCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ContractEvents.
+     */
+    data: ContractEventCreateManyInput | ContractEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ContractEvent createManyAndReturn
+   */
+  export type ContractEventCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractEvent
+     */
+    select?: ContractEventSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many ContractEvents.
+     */
+    data: ContractEventCreateManyInput | ContractEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ContractEvent update
+   */
+  export type ContractEventUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractEvent
+     */
+    select?: ContractEventSelect<ExtArgs> | null
+    /**
+     * The data needed to update a ContractEvent.
+     */
+    data: XOR<ContractEventUpdateInput, ContractEventUncheckedUpdateInput>
+    /**
+     * Choose, which ContractEvent to update.
+     */
+    where: ContractEventWhereUniqueInput
+  }
+
+  /**
+   * ContractEvent updateMany
+   */
+  export type ContractEventUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ContractEvents.
+     */
+    data: XOR<ContractEventUpdateManyMutationInput, ContractEventUncheckedUpdateManyInput>
+    /**
+     * Filter which ContractEvents to update
+     */
+    where?: ContractEventWhereInput
+  }
+
+  /**
+   * ContractEvent upsert
+   */
+  export type ContractEventUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractEvent
+     */
+    select?: ContractEventSelect<ExtArgs> | null
+    /**
+     * The filter to search for the ContractEvent to update in case it exists.
+     */
+    where: ContractEventWhereUniqueInput
+    /**
+     * In case the ContractEvent found by the `where` argument doesn't exist, create a new ContractEvent with this data.
+     */
+    create: XOR<ContractEventCreateInput, ContractEventUncheckedCreateInput>
+    /**
+     * In case the ContractEvent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ContractEventUpdateInput, ContractEventUncheckedUpdateInput>
+  }
+
+  /**
+   * ContractEvent delete
+   */
+  export type ContractEventDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractEvent
+     */
+    select?: ContractEventSelect<ExtArgs> | null
+    /**
+     * Filter which ContractEvent to delete.
+     */
+    where: ContractEventWhereUniqueInput
+  }
+
+  /**
+   * ContractEvent deleteMany
+   */
+  export type ContractEventDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ContractEvents to delete
+     */
+    where?: ContractEventWhereInput
+  }
+
+  /**
+   * ContractEvent without action
+   */
+  export type ContractEventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractEvent
+     */
+    select?: ContractEventSelect<ExtArgs> | null
   }
 
 
@@ -13325,8 +14431,10 @@ export namespace Prisma {
     id: 'id',
     streamId: 'streamId',
     txHash: 'txHash',
+    version: 'version',
     sender: 'sender',
     receiver: 'receiver',
+    contractId: 'contractId',
     tokenAddress: 'tokenAddress',
     amount: 'amount',
     duration: 'duration',
@@ -13345,6 +14453,24 @@ export namespace Prisma {
   };
 
   export type StreamScalarFieldEnum = (typeof StreamScalarFieldEnum)[keyof typeof StreamScalarFieldEnum]
+
+
+  export const ContractEventScalarFieldEnum: {
+    id: 'id',
+    eventId: 'eventId',
+    contractId: 'contractId',
+    txHash: 'txHash',
+    eventType: 'eventType',
+    eventIndex: 'eventIndex',
+    ledgerSequence: 'ledgerSequence',
+    ledgerClosedAt: 'ledgerClosedAt',
+    topicXdr: 'topicXdr',
+    valueXdr: 'valueXdr',
+    decodedJson: 'decodedJson',
+    createdAt: 'createdAt'
+  };
+
+  export type ContractEventScalarFieldEnum = (typeof ContractEventScalarFieldEnum)[keyof typeof ContractEventScalarFieldEnum]
 
 
   export const TokenPriceScalarFieldEnum: {
@@ -13512,6 +14638,13 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+  export const JsonNullValueInput: {
+    JsonNull: typeof JsonNull
+  };
+
+  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
   export const QueryMode: {
     default: 'default',
     insensitive: 'insensitive'
@@ -13526,6 +14659,15 @@ export namespace Prisma {
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   /**
@@ -13597,6 +14739,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -13648,8 +14797,10 @@ export namespace Prisma {
     id?: StringFilter<"Stream"> | string
     streamId?: StringNullableFilter<"Stream"> | string | null
     txHash?: StringFilter<"Stream"> | string
+    version?: IntFilter<"Stream"> | number
     sender?: StringFilter<"Stream"> | string
     receiver?: StringFilter<"Stream"> | string
+    contractId?: StringNullableFilter<"Stream"> | string | null
     tokenAddress?: StringNullableFilter<"Stream"> | string | null
     amount?: StringFilter<"Stream"> | string
     duration?: IntNullableFilter<"Stream"> | number | null
@@ -13671,8 +14822,10 @@ export namespace Prisma {
     id?: SortOrder
     streamId?: SortOrderInput | SortOrder
     txHash?: SortOrder
+    version?: SortOrder
     sender?: SortOrder
     receiver?: SortOrder
+    contractId?: SortOrderInput | SortOrder
     tokenAddress?: SortOrderInput | SortOrder
     amount?: SortOrder
     duration?: SortOrderInput | SortOrder
@@ -13697,8 +14850,10 @@ export namespace Prisma {
     AND?: StreamWhereInput | StreamWhereInput[]
     OR?: StreamWhereInput[]
     NOT?: StreamWhereInput | StreamWhereInput[]
+    version?: IntFilter<"Stream"> | number
     sender?: StringFilter<"Stream"> | string
     receiver?: StringFilter<"Stream"> | string
+    contractId?: StringNullableFilter<"Stream"> | string | null
     tokenAddress?: StringNullableFilter<"Stream"> | string | null
     amount?: StringFilter<"Stream"> | string
     duration?: IntNullableFilter<"Stream"> | number | null
@@ -13720,8 +14875,10 @@ export namespace Prisma {
     id?: SortOrder
     streamId?: SortOrderInput | SortOrder
     txHash?: SortOrder
+    version?: SortOrder
     sender?: SortOrder
     receiver?: SortOrder
+    contractId?: SortOrderInput | SortOrder
     tokenAddress?: SortOrderInput | SortOrder
     amount?: SortOrder
     duration?: SortOrderInput | SortOrder
@@ -13751,8 +14908,10 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Stream"> | string
     streamId?: StringNullableWithAggregatesFilter<"Stream"> | string | null
     txHash?: StringWithAggregatesFilter<"Stream"> | string
+    version?: IntWithAggregatesFilter<"Stream"> | number
     sender?: StringWithAggregatesFilter<"Stream"> | string
     receiver?: StringWithAggregatesFilter<"Stream"> | string
+    contractId?: StringNullableWithAggregatesFilter<"Stream"> | string | null
     tokenAddress?: StringNullableWithAggregatesFilter<"Stream"> | string | null
     amount?: StringWithAggregatesFilter<"Stream"> | string
     duration?: IntNullableWithAggregatesFilter<"Stream"> | number | null
@@ -13768,6 +14927,96 @@ export namespace Prisma {
     accruedInterest?: StringWithAggregatesFilter<"Stream"> | string
     lastYieldAccrualAt?: DateTimeNullableWithAggregatesFilter<"Stream"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Stream"> | Date | string
+  }
+
+  export type ContractEventWhereInput = {
+    AND?: ContractEventWhereInput | ContractEventWhereInput[]
+    OR?: ContractEventWhereInput[]
+    NOT?: ContractEventWhereInput | ContractEventWhereInput[]
+    id?: StringFilter<"ContractEvent"> | string
+    eventId?: StringFilter<"ContractEvent"> | string
+    contractId?: StringFilter<"ContractEvent"> | string
+    txHash?: StringFilter<"ContractEvent"> | string
+    eventType?: StringFilter<"ContractEvent"> | string
+    eventIndex?: IntFilter<"ContractEvent"> | number
+    ledgerSequence?: IntFilter<"ContractEvent"> | number
+    ledgerClosedAt?: StringNullableFilter<"ContractEvent"> | string | null
+    topicXdr?: StringNullableListFilter<"ContractEvent">
+    valueXdr?: StringFilter<"ContractEvent"> | string
+    decodedJson?: JsonFilter<"ContractEvent">
+    createdAt?: DateTimeFilter<"ContractEvent"> | Date | string
+  }
+
+  export type ContractEventOrderByWithRelationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    contractId?: SortOrder
+    txHash?: SortOrder
+    eventType?: SortOrder
+    eventIndex?: SortOrder
+    ledgerSequence?: SortOrder
+    ledgerClosedAt?: SortOrderInput | SortOrder
+    topicXdr?: SortOrder
+    valueXdr?: SortOrder
+    decodedJson?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ContractEventWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    eventId?: string
+    txHash_eventIndex?: ContractEventTxHashEventIndexCompoundUniqueInput
+    AND?: ContractEventWhereInput | ContractEventWhereInput[]
+    OR?: ContractEventWhereInput[]
+    NOT?: ContractEventWhereInput | ContractEventWhereInput[]
+    contractId?: StringFilter<"ContractEvent"> | string
+    txHash?: StringFilter<"ContractEvent"> | string
+    eventType?: StringFilter<"ContractEvent"> | string
+    eventIndex?: IntFilter<"ContractEvent"> | number
+    ledgerSequence?: IntFilter<"ContractEvent"> | number
+    ledgerClosedAt?: StringNullableFilter<"ContractEvent"> | string | null
+    topicXdr?: StringNullableListFilter<"ContractEvent">
+    valueXdr?: StringFilter<"ContractEvent"> | string
+    decodedJson?: JsonFilter<"ContractEvent">
+    createdAt?: DateTimeFilter<"ContractEvent"> | Date | string
+  }, "id" | "eventId" | "txHash_eventIndex">
+
+  export type ContractEventOrderByWithAggregationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    contractId?: SortOrder
+    txHash?: SortOrder
+    eventType?: SortOrder
+    eventIndex?: SortOrder
+    ledgerSequence?: SortOrder
+    ledgerClosedAt?: SortOrderInput | SortOrder
+    topicXdr?: SortOrder
+    valueXdr?: SortOrder
+    decodedJson?: SortOrder
+    createdAt?: SortOrder
+    _count?: ContractEventCountOrderByAggregateInput
+    _avg?: ContractEventAvgOrderByAggregateInput
+    _max?: ContractEventMaxOrderByAggregateInput
+    _min?: ContractEventMinOrderByAggregateInput
+    _sum?: ContractEventSumOrderByAggregateInput
+  }
+
+  export type ContractEventScalarWhereWithAggregatesInput = {
+    AND?: ContractEventScalarWhereWithAggregatesInput | ContractEventScalarWhereWithAggregatesInput[]
+    OR?: ContractEventScalarWhereWithAggregatesInput[]
+    NOT?: ContractEventScalarWhereWithAggregatesInput | ContractEventScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ContractEvent"> | string
+    eventId?: StringWithAggregatesFilter<"ContractEvent"> | string
+    contractId?: StringWithAggregatesFilter<"ContractEvent"> | string
+    txHash?: StringWithAggregatesFilter<"ContractEvent"> | string
+    eventType?: StringWithAggregatesFilter<"ContractEvent"> | string
+    eventIndex?: IntWithAggregatesFilter<"ContractEvent"> | number
+    ledgerSequence?: IntWithAggregatesFilter<"ContractEvent"> | number
+    ledgerClosedAt?: StringNullableWithAggregatesFilter<"ContractEvent"> | string | null
+    topicXdr?: StringNullableListFilter<"ContractEvent">
+    valueXdr?: StringWithAggregatesFilter<"ContractEvent"> | string
+    decodedJson?: JsonWithAggregatesFilter<"ContractEvent">
+    createdAt?: DateTimeWithAggregatesFilter<"ContractEvent"> | Date | string
   }
 
   export type TokenPriceWhereInput = {
@@ -14545,8 +15794,10 @@ export namespace Prisma {
     id?: string
     streamId?: string | null
     txHash: string
+    version?: number
     sender: string
     receiver: string
+    contractId?: string | null
     tokenAddress?: string | null
     amount: string
     duration?: number | null
@@ -14568,8 +15819,10 @@ export namespace Prisma {
     id?: string
     streamId?: string | null
     txHash: string
+    version?: number
     sender: string
     receiver: string
+    contractId?: string | null
     tokenAddress?: string | null
     amount: string
     duration?: number | null
@@ -14591,8 +15844,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     streamId?: NullableStringFieldUpdateOperationsInput | string | null
     txHash?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
     sender?: StringFieldUpdateOperationsInput | string
     receiver?: StringFieldUpdateOperationsInput | string
+    contractId?: NullableStringFieldUpdateOperationsInput | string | null
     tokenAddress?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -14614,8 +15869,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     streamId?: NullableStringFieldUpdateOperationsInput | string | null
     txHash?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
     sender?: StringFieldUpdateOperationsInput | string
     receiver?: StringFieldUpdateOperationsInput | string
+    contractId?: NullableStringFieldUpdateOperationsInput | string | null
     tokenAddress?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -14637,8 +15894,10 @@ export namespace Prisma {
     id?: string
     streamId?: string | null
     txHash: string
+    version?: number
     sender: string
     receiver: string
+    contractId?: string | null
     tokenAddress?: string | null
     amount: string
     duration?: number | null
@@ -14660,8 +15919,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     streamId?: NullableStringFieldUpdateOperationsInput | string | null
     txHash?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
     sender?: StringFieldUpdateOperationsInput | string
     receiver?: StringFieldUpdateOperationsInput | string
+    contractId?: NullableStringFieldUpdateOperationsInput | string | null
     tokenAddress?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -14683,8 +15944,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     streamId?: NullableStringFieldUpdateOperationsInput | string | null
     txHash?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
     sender?: StringFieldUpdateOperationsInput | string
     receiver?: StringFieldUpdateOperationsInput | string
+    contractId?: NullableStringFieldUpdateOperationsInput | string | null
     tokenAddress?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -14699,6 +15962,111 @@ export namespace Prisma {
     vaultRatioScale?: NullableStringFieldUpdateOperationsInput | string | null
     accruedInterest?: StringFieldUpdateOperationsInput | string
     lastYieldAccrualAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContractEventCreateInput = {
+    id?: string
+    eventId: string
+    contractId: string
+    txHash: string
+    eventType: string
+    eventIndex?: number
+    ledgerSequence: number
+    ledgerClosedAt?: string | null
+    topicXdr?: ContractEventCreatetopicXdrInput | string[]
+    valueXdr: string
+    decodedJson: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type ContractEventUncheckedCreateInput = {
+    id?: string
+    eventId: string
+    contractId: string
+    txHash: string
+    eventType: string
+    eventIndex?: number
+    ledgerSequence: number
+    ledgerClosedAt?: string | null
+    topicXdr?: ContractEventCreatetopicXdrInput | string[]
+    valueXdr: string
+    decodedJson: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type ContractEventUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    contractId?: StringFieldUpdateOperationsInput | string
+    txHash?: StringFieldUpdateOperationsInput | string
+    eventType?: StringFieldUpdateOperationsInput | string
+    eventIndex?: IntFieldUpdateOperationsInput | number
+    ledgerSequence?: IntFieldUpdateOperationsInput | number
+    ledgerClosedAt?: NullableStringFieldUpdateOperationsInput | string | null
+    topicXdr?: ContractEventUpdatetopicXdrInput | string[]
+    valueXdr?: StringFieldUpdateOperationsInput | string
+    decodedJson?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContractEventUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    contractId?: StringFieldUpdateOperationsInput | string
+    txHash?: StringFieldUpdateOperationsInput | string
+    eventType?: StringFieldUpdateOperationsInput | string
+    eventIndex?: IntFieldUpdateOperationsInput | number
+    ledgerSequence?: IntFieldUpdateOperationsInput | number
+    ledgerClosedAt?: NullableStringFieldUpdateOperationsInput | string | null
+    topicXdr?: ContractEventUpdatetopicXdrInput | string[]
+    valueXdr?: StringFieldUpdateOperationsInput | string
+    decodedJson?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContractEventCreateManyInput = {
+    id?: string
+    eventId: string
+    contractId: string
+    txHash: string
+    eventType: string
+    eventIndex?: number
+    ledgerSequence: number
+    ledgerClosedAt?: string | null
+    topicXdr?: ContractEventCreatetopicXdrInput | string[]
+    valueXdr: string
+    decodedJson: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type ContractEventUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    contractId?: StringFieldUpdateOperationsInput | string
+    txHash?: StringFieldUpdateOperationsInput | string
+    eventType?: StringFieldUpdateOperationsInput | string
+    eventIndex?: IntFieldUpdateOperationsInput | number
+    ledgerSequence?: IntFieldUpdateOperationsInput | number
+    ledgerClosedAt?: NullableStringFieldUpdateOperationsInput | string | null
+    topicXdr?: ContractEventUpdatetopicXdrInput | string[]
+    valueXdr?: StringFieldUpdateOperationsInput | string
+    decodedJson?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContractEventUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    contractId?: StringFieldUpdateOperationsInput | string
+    txHash?: StringFieldUpdateOperationsInput | string
+    eventType?: StringFieldUpdateOperationsInput | string
+    eventIndex?: IntFieldUpdateOperationsInput | number
+    ledgerSequence?: IntFieldUpdateOperationsInput | number
+    ledgerClosedAt?: NullableStringFieldUpdateOperationsInput | string | null
+    topicXdr?: ContractEventUpdatetopicXdrInput | string[]
+    valueXdr?: StringFieldUpdateOperationsInput | string
+    decodedJson?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -15600,6 +16968,17 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -15654,8 +17033,10 @@ export namespace Prisma {
     id?: SortOrder
     streamId?: SortOrder
     txHash?: SortOrder
+    version?: SortOrder
     sender?: SortOrder
     receiver?: SortOrder
+    contractId?: SortOrder
     tokenAddress?: SortOrder
     amount?: SortOrder
     duration?: SortOrder
@@ -15674,6 +17055,7 @@ export namespace Prisma {
   }
 
   export type StreamAvgOrderByAggregateInput = {
+    version?: SortOrder
     duration?: SortOrder
   }
 
@@ -15681,8 +17063,10 @@ export namespace Prisma {
     id?: SortOrder
     streamId?: SortOrder
     txHash?: SortOrder
+    version?: SortOrder
     sender?: SortOrder
     receiver?: SortOrder
+    contractId?: SortOrder
     tokenAddress?: SortOrder
     amount?: SortOrder
     duration?: SortOrder
@@ -15704,8 +17088,10 @@ export namespace Prisma {
     id?: SortOrder
     streamId?: SortOrder
     txHash?: SortOrder
+    version?: SortOrder
     sender?: SortOrder
     receiver?: SortOrder
+    contractId?: SortOrder
     tokenAddress?: SortOrder
     amount?: SortOrder
     duration?: SortOrder
@@ -15724,6 +17110,7 @@ export namespace Prisma {
   }
 
   export type StreamSumOrderByAggregateInput = {
+    version?: SortOrder
     duration?: SortOrder
   }
 
@@ -15761,6 +17148,22 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -15825,15 +17228,115 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+  export type JsonFilter<$PrismaModel = never> = 
+    | PatchUndefined<
+        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type ContractEventTxHashEventIndexCompoundUniqueInput = {
+    txHash: string
+    eventIndex: number
+  }
+
+  export type ContractEventCountOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    contractId?: SortOrder
+    txHash?: SortOrder
+    eventType?: SortOrder
+    eventIndex?: SortOrder
+    ledgerSequence?: SortOrder
+    ledgerClosedAt?: SortOrder
+    topicXdr?: SortOrder
+    valueXdr?: SortOrder
+    decodedJson?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ContractEventAvgOrderByAggregateInput = {
+    eventIndex?: SortOrder
+    ledgerSequence?: SortOrder
+  }
+
+  export type ContractEventMaxOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    contractId?: SortOrder
+    txHash?: SortOrder
+    eventType?: SortOrder
+    eventIndex?: SortOrder
+    ledgerSequence?: SortOrder
+    ledgerClosedAt?: SortOrder
+    valueXdr?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ContractEventMinOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    contractId?: SortOrder
+    txHash?: SortOrder
+    eventType?: SortOrder
+    eventIndex?: SortOrder
+    ledgerSequence?: SortOrder
+    ledgerClosedAt?: SortOrder
+    valueXdr?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ContractEventSumOrderByAggregateInput = {
+    eventIndex?: SortOrder
+    ledgerSequence?: SortOrder
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> = 
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
   }
 
   export type FloatFilter<$PrismaModel = never> = {
@@ -15879,22 +17382,6 @@ export namespace Prisma {
   export type TokenPriceSumOrderByAggregateInput = {
     decimals?: SortOrder
     priceUsd?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type FloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -16425,6 +17912,14 @@ export namespace Prisma {
     set?: string | null
   }
 
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type NullableIntFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
@@ -16449,12 +17944,13 @@ export namespace Prisma {
     set?: Date | string
   }
 
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
+  export type ContractEventCreatetopicXdrInput = {
+    set: string[]
+  }
+
+  export type ContractEventUpdatetopicXdrInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type FloatFieldUpdateOperationsInput = {
@@ -16511,6 +18007,17 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedIntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type NestedIntNullableFilter<$PrismaModel = never> = {
@@ -16575,17 +18082,6 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
-  export type NestedIntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -16601,6 +18097,33 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -16675,32 +18198,27 @@ export namespace Prisma {
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
+  export type NestedJsonFilter<$PrismaModel = never> = 
+    | PatchUndefined<
+        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
 
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
+  export type NestedJsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -16799,6 +18317,10 @@ export namespace Prisma {
      * @deprecated Use StreamDefaultArgs instead
      */
     export type StreamArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = StreamDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use ContractEventDefaultArgs instead
+     */
+    export type ContractEventArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ContractEventDefaultArgs<ExtArgs>
     /**
      * @deprecated Use TokenPriceDefaultArgs instead
      */

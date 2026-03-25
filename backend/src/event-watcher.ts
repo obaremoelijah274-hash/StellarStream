@@ -375,8 +375,11 @@ export class EventWatcher {
                     streamId: string | null;
                     sender: string;
                     receiver: string;
+                    contractId: string;
                     amount: string;
                     duration: number | null;
+                    version: number;
+                    yieldEnabled: boolean;
                   };
                 }) => Promise<unknown>;
               };
@@ -387,8 +390,11 @@ export class EventWatcher {
               streamId: streamId || null,
               sender,
               receiver,
+              contractId: event.contractId,
               amount,
               duration,
+              version: resolveStreamVersion(event.contractId),
+              yieldEnabled: resolveYieldEnabled(data),
             },
           });
           logger.info("Stream successfully saved to Prisma DB", {
@@ -837,4 +843,23 @@ export class EventWatcher {
       this.pollTimeout = setTimeout(resolve, ms);
     });
   }
+}
+
+function resolveStreamVersion(contractId: string): number {
+  return contractId === (process.env.V1_CONTRACT_ID ?? "") ? 1 : 2;
+}
+
+function resolveYieldEnabled(value: unknown): boolean {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return false;
+  }
+
+  const record = value as Record<string, unknown>;
+  const explicitFlag = record.yield_enabled ?? record.yieldEnabled;
+
+  if (typeof explicitFlag === "boolean") {
+    return explicitFlag;
+  }
+
+  return Boolean(record.vault_contract_id ?? record.vaultContractId);
 }

@@ -25,6 +25,15 @@ export interface SorobanErrorModalProps {
 }
 
 // ─── Severity styles ──────────────────────────────────────────────────────────
+  /** Raw XDR result string, error object, numeric code, or null to close */
+  error: unknown;
+  /** Called when the user dismisses the modal */
+  onClose: () => void;
+  /** Optional transaction hash for Stellar.Expert link */
+  txHash?: string;
+}
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 const SEVERITY_STYLES: Record<
   DecodedError["severity"],
@@ -101,6 +110,7 @@ export function SorobanErrorModal({
       setTimeout(() => setCopied(false), 2000);
     } catch {
       // clipboard blocked — user can manually copy the raw value
+      // Fallback: select text manually — clipboard may be blocked in some browsers
     }
   }, [decoded, txHash]);
 
@@ -134,6 +144,7 @@ export function SorobanErrorModal({
             className={`fixed left-1/2 top-1/2 z-[71] w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl border bg-[#0a0a0f]/95 backdrop-blur-2xl p-6 ${style.border} ${style.glow}`}
           >
             {/* Close */}
+            {/* Close button */}
             <button
               onClick={onClose}
               aria-label="Close error dialog"
